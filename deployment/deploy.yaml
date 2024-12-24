@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: online-banking-deployment
+spec:
+  replicas: 1  # Adjust as necessary
+  selector:
+    matchLabels:
+      app: online-banking
+  template:
+    metadata:
+      labels:
+        app: online-banking
+    spec:
+      containers:
+      - name: online-banking-container
+        image: <your-docker-image>  # Replace this with your Docker image name
+        ports:
+        - containerPort: 8080  # Replace with your app's port if necessary
+        env:
+        - name: DB_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: online-banking-config
+              key: DB_HOST
+        - name: DB_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: online-banking-config
+              key: DB_PORT
+        - name: DB_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: online-banking-config
+              key: DB_NAME
+        - name: DB_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: online-banking-secret
+              key: DB_USERNAME
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: online-banking-secret
+              key: DB_PASSWORD
+
