@@ -101,11 +101,11 @@
 		</dependency>
         
 		<!-- Add dotenv-java dependency -->
-		<dependency>
+		<!-- <dependency>
 			<groupId>io.github.cdimascio</groupId>
 			<artifactId>dotenv-java</artifactId>
 			<version>5.2.2</version>
-		</dependency>
+		</dependency> -->
 
 	</dependencies>
 
