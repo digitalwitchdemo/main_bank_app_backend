@@ -30,9 +30,6 @@ jobs:
     
     - name: Push image to Docker Registry
       run: docker push ${{ secrets.REGISTRY_NAME }}/bank-app-backend:$(echo $GITHUB_SHA | head -c7)
-   
-    - name: Update the kubernetes Deployment file. 
-      run: sed -i "s+supportcloud160/bank-app-backend:.*+supportcloud160/bank-app-backend:${{ github.run_number }}+g" deployment/deploy.yaml
 
     - name: Clean up Docker image locally
       run: docker rmi ${{ secrets.REGISTRY_NAME }}/bank-app-backend:$(echo $GITHUB_SHA | head -c7)
@@ -49,6 +46,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Update the kubernetes Deployment file. 
+        run: |
+          cat deployment/deploy.yaml
+          sed -i "s+supportcloud160/bank-app-backend:.*+supportcloud160/bank-app-backend:${{ github.run_number }}+g" deployment/deploy.yaml
+          cat deployment/deploy.yaml
           
       - name: Authenticate to GCP
         env:
