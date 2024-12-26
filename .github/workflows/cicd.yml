@@ -23,16 +23,16 @@ jobs:
 
        
     - name: Build container image
-      run: docker build -t ${{ secrets.REGISTRY_NAME }}/bank-app-backend:$(echo $GITHUB_SHA | head -c7) .
+      run: docker build -t ${{ secrets.REGISTRY_NAME }}/bank-app-backend:${{ github.run_number }} .
     
     - name: Log in to Docker Registry with short-lived credentials
       run: docker login -u ${{ secrets.REGISTRY_NAME }} --password ${{ secrets.DOCKERHUB_TOKEN }}
     
     - name: Push image to Docker Registry
-      run: docker push ${{ secrets.REGISTRY_NAME }}/bank-app-backend:$(echo $GITHUB_SHA | head -c7)
+      run: docker push ${{ secrets.REGISTRY_NAME }}/bank-app-backend:${{ github.run_number }}
 
     - name: Clean up Docker image locally
-      run: docker rmi ${{ secrets.REGISTRY_NAME }}/bank-app-backend:$(echo $GITHUB_SHA | head -c7)
+      run: docker rmi ${{ secrets.REGISTRY_NAME }}/bank-app-backend:${{ github.run_number }}
 
     - name: Clean up GitHub repo on runner
       run: rm -rf ./*
