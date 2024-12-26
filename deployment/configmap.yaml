@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: online-banking-config
+  name: bank-backend-config
 data:
   DB_HOST: "34.42.145.145"
   DB_PORT: "3306"

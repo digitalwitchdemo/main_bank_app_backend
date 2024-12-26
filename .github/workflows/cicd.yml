@@ -77,7 +77,7 @@ jobs:
                 gcloud container clusters get-credentials dev-cluster --zone us-central1-a --project ${{ secrets.GCP_PROJECT_ID }}
 
 
-      - name: Deploy MongoDB to Kubernetes
+      - name: Deploy Bank Backend to Kubernetes
         run: |
-            kubectl delete -f deployment
+            kubectl apply -f deployment
             kubectl get pod 

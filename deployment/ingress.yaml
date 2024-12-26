@@ -1,7 +1,7 @@
 # apiVersion: networking.k8s.io/v1
 # kind: Ingress
 # metadata:
-#   name: online-banking-ingress
+#   name: bank-backend-ingress
 #   annotations:
 #     nginx.ingress.kubernetes.io/ssl-redirect: "true"  # Force redirect HTTP to HTTPS
 #     nginx.ingress.kubernetes.io/rewrite-target: "/"
@@ -14,16 +14,16 @@
 #           pathType: Prefix
 #           backend:
 #             service:
-#               name: online-banking-service  # The name of the service to route traffic to
+#               name: bank-backend-service  # The name of the service to route traffic to
 #               port:
 #                 number: 80  # The internal port for your service
 #   tls:
 #     - hosts:
 #         - your-domain.com  # Replace with your domain name
-#       secretName: online-banking-tls-secret  # The name of the secret containing the TLS certificate
+#       secretName: bank-backend-tls-secret  # The name of the secret containing the TLS certificate
 
 
 
-# # kubectl create secret tls online-banking-tls-secret \
+# # kubectl create secret tls bank-backend-tls-secret \
 # #   --cert=<path-to-certificate>/tls.crt \
 # #   --key=<path-to-private-key>/tls.key
