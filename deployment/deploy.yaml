@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: online-banking-container
-        image: <your-docker-image>  # Replace this with your Docker image name
+        image: supportcloud160/bank-app-backend:b219162  # Replace this with your Docker image name
         ports:
         - containerPort: 8080  # Replace with your app's port if necessary
         env:
