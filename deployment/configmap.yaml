@@ -3,6 +3,6 @@ kind: ConfigMap
 metadata:
   name: online-banking-config
 data:
-  DB_HOST: "activelearn-do-user-13495475-0.c.db.ondigitalocean.com"
-  DB_PORT: "25060"
+  DB_HOST: "34.42.145.145"
+  DB_PORT: "3306"
   DB_NAME: "online_banking_system"
