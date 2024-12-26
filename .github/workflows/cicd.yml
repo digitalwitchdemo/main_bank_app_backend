@@ -79,5 +79,5 @@ jobs:
 
       - name: Deploy MongoDB to Kubernetes
         run: |
-            kubectl apply -f deployment
+            kubectl delete -f deployment
             kubectl get pod 
