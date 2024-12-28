@@ -1,7 +1,7 @@
 # Use the khipu/openjdk17-alpine base image
 FROM khipu/openjdk17-alpine
 
-# Set the working directory inside the container
+# Set the working directory inside the container.
 WORKDIR /app
 
 # Copy the pom.xml and any other necessary files for building the application
