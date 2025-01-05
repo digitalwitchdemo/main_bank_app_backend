@@ -3,6 +3,6 @@ kind: ConfigMap
 metadata:
   name: bank-backend-config
 data:
-  DB_HOST: "34.42.145.145"
+  DB_HOST: "34.27.23.176"
   DB_PORT: "3306"
   DB_NAME: "online_banking_system"

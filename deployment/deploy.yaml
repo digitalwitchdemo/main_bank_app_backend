@@ -33,6 +33,7 @@ spec:
             configMapKeyRef:
               name: bank-backend-config
               key: DB_NAME
+              
         - name: DB_USERNAME
           valueFrom:
             secretKeyRef:

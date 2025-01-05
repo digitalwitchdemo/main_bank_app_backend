@@ -39,7 +39,7 @@ jobs:
 
 
 
-  Continues-Deployment:
+  Continues-Deployment-gcp-k8s:
     runs-on: ubuntu-latest
     needs: Continues-Integration_build_and_push
   
@@ -52,7 +52,9 @@ jobs:
           cat deployment/deploy.yaml
           sed -i "s+supportcloud160/bank-app-backend:.*+supportcloud160/bank-app-backend:${{ github.run_number }}+g" deployment/deploy.yaml
           cat deployment/deploy.yaml
-          
+
+
+
       - name: Authenticate to GCP
         env:
           GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS_JSON }}
@@ -80,4 +82,5 @@ jobs:
       - name: Deploy Bank Backend to Kubernetes
         run: |
             kubectl apply -f deployment
+            sleep 30
             kubectl get pod 
