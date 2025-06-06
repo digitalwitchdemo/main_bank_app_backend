@@ -62,7 +62,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: Continues-Integration_build_and_push
     steps:
-    - name: Checkout repository
+    - name: Checkout repository.
       env:
           GIT_USERNAME: ${{ secrets.GIT_USERNAME }}
           GIT_PASSWORD: ${{ secrets.GIT_PASSWORD }}
