@@ -62,15 +62,13 @@ jobs:
     runs-on: ubuntu-latest
     needs: Continues-Integration_build_and_push
     steps:
-    - name: Checkout repository.
+    - name: Checkout repository
       env:
           GIT_USERNAME: ${{ secrets.GIT_USERNAME }}
           GIT_PASSWORD: ${{ secrets.GIT_PASSWORD }}
       run: |
          git clone https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/digitalwitchdemo/kubernetes-manifest.git
           cd kubernetes-manifest
-          version=$(echo $GITHUB_SHA | head -c7)
-          echo $version
 
           git config user.email "chukwunonsosmartagbawo@gmail.com"
           git config user.name "smartcloud2023"
