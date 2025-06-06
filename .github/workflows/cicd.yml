@@ -66,20 +66,13 @@ jobs:
       env:
           GIT_USERNAME: ${{ secrets.GIT_USERNAME }}
           GIT_PASSWORD: ${{ secrets.GIT_PASSWORD }}
-
-      uses: actions/checkout@v3
-      with:
-        repository: digitalwitchdemo/kubernetes-manifest
-        ref: main
-
-    - name: Update Kubernetes manifest with new image tag
       run: |
          git clone https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/digitalwitchdemo/kubernetes-manifest.git
           cd argocd
           version=$(echo $GITHUB_SHA | head -c7)
           echo $version
 
-          git config user.email "smarta@activedgetechnologies.com"
+          git config user.email "chukwunonsosmartagbawo@gmail.com"
           git config user.name "smartcloud2023"
 
           sed -i "s+${{ vars.ECR_REPO }}/bank-backendapi:.*+${{ vars.ECR_REPO }}/bank-backendapi:${{ github.run_number }}+g" bank-project/backendapi.yaml
