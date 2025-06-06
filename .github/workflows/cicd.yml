@@ -68,7 +68,7 @@ jobs:
           GIT_PASSWORD: ${{ secrets.GIT_PASSWORD }}
       run: |
          git clone https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/digitalwitchdemo/kubernetes-manifest.git
-          cd argocd
+          cd kubernetes-manifest
           version=$(echo $GITHUB_SHA | head -c7)
           echo $version
 
