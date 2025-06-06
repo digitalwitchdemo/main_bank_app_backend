@@ -68,8 +68,9 @@ jobs:
           GIT_PASSWORD: ${{ secrets.GIT_PASSWORD }}
       run: |
          git clone https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/digitalwitchdemo/kubernetes-manifest.git
-          cd kubernetes-manifest
-
+         
+         cd kubernetes-manifest
+         ls -la
           # git config user.email "chukwunonsosmartagbawo@gmail.com"
           git config user.name "smartcloud2023"
 
@@ -78,6 +79,6 @@ jobs:
           cat bank-project/backendapi.yaml | grep -q "${{ vars.ECR_REPO }}/bank-backendapi:${{ github.run_number }}"
 
           git add bank-project/backendapi.yaml
-          git commit -m "Update backendapi image to version ${version}"
-          git push
+          git commit -m "Update backendapi image to version ${{ github.run_number }}"
+          git push origin main
         
