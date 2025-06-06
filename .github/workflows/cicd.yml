@@ -78,6 +78,6 @@ jobs:
          cat ./bank-project/backendapi.yaml | grep -q "${{ vars.ECR_REPO }}/bank-backendapi:${{ github.run_number }}"
 
          git add bank-project/backendapi.yaml
-         git commit -m "Update backendapi image to version ${{ github.run_number }}"
+         git commit -m "Update. backendapi image to version ${{ github.run_number }}"
          git push origin main
         
