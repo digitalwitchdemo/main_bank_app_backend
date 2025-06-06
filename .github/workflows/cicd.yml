@@ -37,22 +37,15 @@ jobs:
     - name: Build container image
       run: docker build -t bank-app-backend:latest .
 
-
-
     - name: Log in to ECR with short-lived credentials
       run: |
         aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ vars.ECR_REPO }}
-    
-
-
+  
     - name: Tag Docker image
       run: docker tag bank-app-backend:latest ${{ vars.ECR_REPO }}/bank-backendapi:${{ github.run_number }}
     
-    
     - name: Push image to ECR
       run: docker push ${{ vars.ECR_REPO }}/bank-backendapi:${{ github.run_number }}
-
-
 
 
     - name: Clean up Docker image locally
@@ -62,3 +55,38 @@ jobs:
 
     - name: Clean up GitHub repo on runner
       run: rm -rf ./*
+
+
+  
+  Continues-Update_k8s_manifest:
+    runs-on: ubuntu-latest
+    needs: Continues-Integration_build_and_push
+    steps:
+    - name: Checkout repository
+      env:
+          GIT_USERNAME: ${{ secrets.GIT_USERNAME }}
+          GIT_PASSWORD: ${{ secrets.GIT_PASSWORD }}
+
+      uses: actions/checkout@v3
+      with:
+        repository: digitalwitchdemo/kubernetes-manifest
+        ref: main
+
+    - name: Update Kubernetes manifest with new image tag
+      run: |
+         git clone https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/digitalwitchdemo/kubernetes-manifest.git
+          cd argocd
+          version=$(echo $GITHUB_SHA | head -c7)
+          echo $version
+
+          git config user.email "smarta@activedgetechnologies.com"
+          git config user.name "smartcloud2023"
+
+          sed -i "s+${{ vars.ECR_REPO }}/bank-backendapi:.*+${{ vars.ECR_REPO }}/bank-backendapi:${{ github.run_number }}+g" bank-project/backendapi.yaml
+
+          bank-project/backendapi.yaml | grep -q "${{ vars.ECR_REPO }}/bank-backendapi:${{ github.run_number }}"
+
+          git add bank-project/backendapi.yaml
+          git commit -m "Update backendapi image to version ${version}"
+          git push
+        
