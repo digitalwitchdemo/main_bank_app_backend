@@ -12,6 +12,11 @@ on:
 jobs:
   Continues-Integration_build_and_push:
     runs-on: ubuntu-latest
+    env:
+      REGISTRY_NAME: ${{ secrets.REGISTRY_NAME }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_REGION: us-east-1
 
     steps:
     - name: Checkout repository
@@ -21,66 +26,39 @@ jobs:
         ref: main
 
 
-       
+    - name: Log in to awscli
+      uses: aws-actions/configure-aws-credentials@v3
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
+
+
     - name: Build container image
-      run: docker build -t ${{ secrets.REGISTRY_NAME }}/bank-app-backend:${{ github.run_number }} .
+      run: docker build -t bank-app-backend:latest .
+
+
+
+    - name: Log in to ECR with short-lived credentials
+      run: |
+        aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ vars.ECR_REPO }}
     
-    - name: Log in to Docker Registry with short-lived credentials
-      run: docker login -u ${{ secrets.REGISTRY_NAME }} --password ${{ secrets.DOCKERHUB_TOKEN }}
+
+
+    - name: Tag Docker image
+      run: docker tag bank-app-backend:latest ${{ vars.ECR_REPO }}/bank-backendapi:${{ github.run_number }}
     
-    - name: Push image to Docker Registry
-      run: docker push ${{ secrets.REGISTRY_NAME }}/bank-app-backend:${{ github.run_number }}
+    
+    - name: Push image to ECR
+      run: docker push ${{ vars.ECR_REPO }}/bank-backendapi:${{ github.run_number }}
+
+
+
 
     - name: Clean up Docker image locally
-      run: docker rmi ${{ secrets.REGISTRY_NAME }}/bank-app-backend:${{ github.run_number }}
+      run: |
+        docker rmi bank-app-backend:latest
+        docker rmi ${{ vars.ECR_REPO }}/bank-backendapi:${{ github.run_number }}
 
     - name: Clean up GitHub repo on runner
       run: rm -rf ./*
-
-
-
-  Continues-Deployment-gcp-k8s:
-    runs-on: ubuntu-latest
-    needs: Continues-Integration_build_and_push
-  
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Update the kubernetes Deployment file. 
-        run: |
-          cat deployment/deploy.yaml
-          sed -i "s+supportcloud160/bank-app-backend:.*+supportcloud160/bank-app-backend:${{ github.run_number }}+g" deployment/deploy.yaml
-          cat deployment/deploy.yaml
-
-
-
-      - name: Authenticate to GCP
-        env:
-          GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS_JSON }}
-        run: |
-            echo "$GOOGLE_APPLICATION_CREDENTIALS" > gcp-key.json
-            gcloud auth activate-service-account --key-file=gcp-key.json
-            gcloud config set project ${{ secrets.GCP_PROJECT_ID }}
-          
-
-      - name: Installing the Google Kubernetes authentication plugin name gke-gcloud-auth-plugin
-        run: |
-              sudo apt-get update 
-              sudo apt-get install apt-transport-https ca-certificates gnupg curl -y
-              curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo gpg --dearmor -o /usr/share/keyrings/cloud.google.gpg
-              echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
-              sudo apt-get update && sudo apt-get install google-cloud-cli -y
-              sudo apt-get install google-cloud-cli-gke-gcloud-auth-plugin -y
-
-
-      - name: Configure kubectl for GKE
-        run: |
-                gcloud container clusters get-credentials dev-cluster --zone us-central1-a --project ${{ secrets.GCP_PROJECT_ID }}
-
-
-      - name: Deploy Bank Backend to Kubernetes
-        run: |
-            kubectl apply -f deployment
-            sleep 30
-            kubectl get pod 
