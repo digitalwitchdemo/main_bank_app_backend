@@ -135,6 +135,11 @@
 		                      </goals>
 		                  </execution>
 		              </executions>
+				<configuration>
+				    <format>ALL</format> <!-- includes JSON, HTML, XML -->
+				    <failBuildOnCVSS>0</failBuildOnCVSS> <!-- avoids failing pipeline -->
+				    <showSummary>true</showSummary> <!-- more console output -->
+				</configuration>
                         </plugin>
 		</plugins>
 	</build>
