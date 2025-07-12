@@ -12,8 +12,11 @@ jobs:
     environment: SecOps
 
     steps: 
-      - name: Checkout
-        uses: action/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          repository: digitalwitchdemo/main_bank_app_backend
+          ref: main
 
       - name: SetUp JDK 1.8 
         uses: action/setup-java@v1
