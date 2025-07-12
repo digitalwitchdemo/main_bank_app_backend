@@ -27,7 +27,7 @@ jobs:
 
       - name: Dependency check lib installation
         run: | 
-             mvn org.owasp:dependency-check-maven:check
+             mvn org.owasp:dependency-check-maven:check -DnvdApiKey={{ secret.NVD_API_KEY }}
 
              
   # Sonar-Scan:
