@@ -13,7 +13,7 @@ jobs:
 
     steps: 
       - name: Checkout
-        uses: action/checkout@v4
+        uses: action/checkout@v3
 
       - name: SetUp JDK 1.8 
         uses: action/setup-java@v1
@@ -33,4 +33,4 @@ jobs:
 
   #   steps:
   #     - name: Checkout
-  #       uses: action/checkout@v4  
+  #       uses: action/checkout@v3  
