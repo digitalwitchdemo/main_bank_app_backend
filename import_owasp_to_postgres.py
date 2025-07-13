@@ -3,12 +3,54 @@ import pandas as pd
 import psycopg2
 from psycopg2.extras import execute_values
 
-# Read CSV from the ./target folder
+# Load CSV
 csv_path = "./target/dependency-check-report.csv"
 df = pd.read_csv(csv_path)
 
-# Optional: Convert ScanDate to proper timestamp
-df["ScanDate"] = pd.to_datetime(df["ScanDate"], errors="coerce")
+# Clean column names to match DB schema
+rename_map = {
+    "Project": "project",
+    "ScanDate": "scan_date",
+    "DependencyName": "dependency_name",
+    "DependencyPath": "dependency_path",
+    "Description": "description",
+    "License": "license",
+    "Md5": "md5",
+    "Sha1": "sha1",
+    "Identifiers": "identifiers",
+    "CPE": "cpe",
+    "CVE": "cve",
+    "CWE": "cwe",
+    "Vulnerability": "vulnerability",
+    "Source": "source",
+    "CVSSv2_Severity": "cvssv2_severity",
+    "CVSSv2_Score": "cvssv2_score",
+    "CVSSv2": "cvssv2",
+    "CVSSv3_BaseSeverity": "cvssv3_base_severity",
+    "CVSSv3_BaseScore": "cvssv3_base_score",
+    "CVSSv3": "cvssv3",
+    "CVSSv4_BaseSeverity": "cvssv4_base_severity",
+    "CVSSv4_BaseScore": "cvssv4_base_score",
+    "CVSSv4": "cvssv4",
+    "CPE Confidence": "cpe_confidence",
+    "Evidence Count": "evidence_count",
+    "VendorProject": "vendor_project",
+    "Product": "product",
+    "Name": "name",
+    "DateAdded": "date_added",
+    "ShortDescription": "short_description",
+    "RequiredAction": "required_action",
+    "DueDate": "due_date",
+    "Notes": "notes"
+}
+
+# Apply the renaming
+df.rename(columns=rename_map, inplace=True)
+
+# Ensure scan_date is datetime
+if "scan_date" in df.columns:
+    df["scan_date"] = pd.to_datetime(df["scan_date"], errors="coerce")
+
 
 # Connect to PostgreSQL
 conn = psycopg2.connect(
@@ -29,15 +71,15 @@ cur = conn.cursor()
 # Prepare insert
 columns = list(df.columns)
 values = [tuple(x) for x in df.to_numpy()]
-
 insert_query = f"""
-    INSERT INTO owasp_dependency_report ({', '.join(f'"{col}"' for col in columns)})
+    INSERT INTO owasp_dependency_report ({', '.join(columns)})
     VALUES %s
 """
 
+# Execute insert
 execute_values(cur, insert_query, values)
 conn.commit()
+print(f"✅ Inserted {len(values)} rows.")
 
-print(f"✅ Inserted {len(values)} records.")
 cur.close()
 conn.close()
