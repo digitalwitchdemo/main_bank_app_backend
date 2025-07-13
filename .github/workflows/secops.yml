@@ -29,6 +29,7 @@ jobs:
         run: | 
              mvn org.owasp:dependency-check-maven:check -DnvdApiKey=53b89eac-b172-4a93-af5b-c1f278f58085
              ls -la ./target
+             cat ./target/dependency-check-report.csv
 
              
   # Sonar-Scan:
