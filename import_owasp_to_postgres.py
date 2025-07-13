@@ -12,11 +12,17 @@ df["ScanDate"] = pd.to_datetime(df["ScanDate"], errors="coerce")
 
 # Connect to PostgreSQL
 conn = psycopg2.connect(
-    host=os.environ["PG_HOST"],
-    port=os.environ.get("PG_PORT", 5432),
-    dbname=os.environ["PG_DATABASE"],
-    user=os.environ["PG_USER"],
-    password=os.environ["PG_PASSWORD"]
+    host="18.206.246.139",
+    port="5432",
+    dbname="secopsdb",
+    user="secops",
+    password="supersecurepassword"
+    
+    # host=os.environ["PG_HOST"],
+    # port=os.environ.get("PG_PORT", 5432),
+    # dbname=os.environ["PG_DATABASE"],
+    # user=os.environ["PG_USER"],
+    # password=os.environ["PG_PASSWORD"]
 )
 cur = conn.cursor()
 
