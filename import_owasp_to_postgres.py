@@ -31,7 +31,7 @@ columns = list(df.columns)
 values = [tuple(x) for x in df.to_numpy()]
 
 insert_query = f"""
-    INSERT INTO owasp_dependency_report ({', '.join(columns)})
+    INSERT INTO owasp_dependency_report ({', '.join(f'"{col}"' for col in columns)})
     VALUES %s
 """
 
