@@ -123,6 +123,27 @@
 					</excludes>
 				</configuration>
 			</plugin>
+
+			<plugin>
+		              <groupId>org.owasp</groupId>
+		              <artifactId>dependency-check-maven</artifactId>
+		              <version>12.1.0</version>
+		              <executions>
+		                  <execution>
+		                      <goals>
+		                          <goal>check</goal>
+		                      </goals>
+		                  </execution>
+		              </executions>
+				<configuration>
+				    <format>ALL</format> <!-- includes JSON, HTML, XML -->
+				    <failBuildOnCVSS>11</failBuildOnCVSS> <!-- avoids failing pipeline -->
+				    <showSummary>true</showSummary> <!-- more console output -->
+				</configuration>
+                        </plugin>
+
+			################'
+			###############
 		</plugins>
 	</build>
 
