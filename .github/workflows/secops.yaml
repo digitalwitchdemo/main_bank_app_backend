@@ -27,5 +27,11 @@ jobs:
              ls -la ./target
 
              cat ./target/dependency-check-report.csv
+             
+
+      - name: Upload to DefectDojo
+        run: |
+           chmod +x  dependencycheck-defectdojoupload.sh
+           sh ./dependencycheck-defectdojoupload.sh
 
              
