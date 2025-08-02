@@ -141,9 +141,6 @@
 				    <showSummary>true</showSummary> <!-- more console output -->
 				</configuration>
                         </plugin>
-
-			################'
-			###############
 		</plugins>
 	</build>
 
