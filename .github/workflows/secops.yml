@@ -68,22 +68,17 @@ jobs:
 
       - name: Generate Dockerfile JSON
         run: |
-          bash opa/dockerfile-to-json.sh Dockerfile > scan_data/dockerfile.json
-          cp opa/policy.rego scan_data/
-          ls -la scan_data
-
           bash opa/dockerfile-to-json.sh Dockerfile > opa/dockerfile.json
-          ls -la opa
+          ls -la
 
       - name: Run OPA Policy Check
         run: |
+          pwd ./
           docker run --rm \
-            -v ${{ github.workspace }}/scan_data:/workspace \
             openpolicyagent/opa eval \
-            --input /workspace/dockerfile.json \
-            --data /workspace/policy.rego \
+            --input ./opa/dockerfile.json \
+            --data ./opa/policy.rego \
             "data.docker.compliance.deny" > violations.json
-
 
       - name: Fail if Violations Exist
         run: |
