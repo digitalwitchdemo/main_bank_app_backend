@@ -1,3 +1,27 @@
+  # - name: Set up Python
+      #   uses: actions/setup-python@v5
+      #   with:
+      #     python-version: '3.11'
+
+      # - name: Install dependencies
+      #   run: |
+      #     pip install pandas psycopg2-binary
+
+      # - name: Import CSV to PostgreSQL
+      #   env:
+      #     PG_HOST: ${{ secrets.PG_HOST }}
+      #     PG_PORT: ${{ secrets.PG_PORT }}
+      #     PG_DATABASE: ${{ secrets.PG_DATABASE }}
+      #     PG_USER: ${{ secrets.PG_USER }}
+      #     PG_PASSWORD: ${{ secrets.PG_PASSWORD }}
+      #   run: python import_owasp_to_postgres.py
+
+
+
+
+
+
+
 import os
 import pandas as pd
 import psycopg2

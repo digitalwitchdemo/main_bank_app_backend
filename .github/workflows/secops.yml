@@ -1,67 +1,90 @@
-name: Static Code Analysis On Dependency Check analysis
+name: Static Code Analysis On Bank App Backend
+
 
 on: 
   push: 
     branches:
       - SeOps
 
+
 jobs: 
-  Dependency-Check:
-    name: OWASP-Dependency-Check
-    runs-on: ubuntu-latest
-    environment: SecOps
-
-    steps: 
-      - name: Checkout repository
-        uses: actions/checkout@v3
-        with:
-          repository: digitalwitchdemo/main_bank_app_backend
-          ref: SeOps
-
-      - name: SetUp JDK 1.8 
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'zulu' # See 'Supported distributions' for available options
-          java-version: '21'
-
-
-      - name: Dependency check lib installation
-        run: | 
-             mvn org.owasp:dependency-check-maven:check -DnvdApiKey=53b89eac-b172-4a93-af5b-c1f278f58085
-             ls -la ./target
-             cat ./target/dependency-check-report.csv
-
-
-      - name: Uploading to DefectDojo
-        run: | 
-             chmod +x dependency-check-upload.sh
-             sh dependency-check-upload.sh
-        
-
-      # - name: Set up Python
-      #   uses: actions/setup-python@v5
-      #   with:
-      #     python-version: '3.11'
-
-      # - name: Install dependencies
-      #   run: |
-      #     pip install pandas psycopg2-binary
-
-      # - name: Import CSV to PostgreSQL
-      #   env:
-      #     PG_HOST: ${{ secrets.PG_HOST }}
-      #     PG_PORT: ${{ secrets.PG_PORT }}
-      #     PG_DATABASE: ${{ secrets.PG_DATABASE }}
-      #     PG_USER: ${{ secrets.PG_USER }}
-      #     PG_PASSWORD: ${{ secrets.PG_PASSWORD }}
-      #   run: python import_owasp_to_postgres.py
-
-             
-  # Sonar-Scan:
-  #   name: Sonar-Scan
+  # Dependency-Check:
+  #   name: OWASP-Dependency-Check
   #   runs-on: ubuntu-latest
   #   environment: SecOps
 
-  #   steps:
-  #     - name: Checkout
-  #       uses: action/checkout@v3  
+  #   steps: 
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v3
+  #       with:
+  #         repository: digitalwitchdemo/main_bank_app_backend
+  #         ref: SeOps
+
+  #     - name: SetUp JDK 1.8 
+  #       uses: actions/setup-java@v4
+  #       with:
+  #         distribution: 'zulu' # See 'Supported distributions' for available options
+  #         java-version: '21'
+
+
+  #     - name: Dependency check lib installation
+  #       run: | 
+  #            mvn org.owasp:dependency-check-maven:check -DnvdApiKey=${{ secrets.NVD_API_KEY }}
+  #            ls -la ./target
+  #            cat ./target/dependency-check-report.csv
+
+
+  #     - name: Uploading to DefectDojo
+        # run: | 
+        #      chmod +x dependency-check-upload.sh
+        #      sh dependency-check-upload.sh
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  dockerfile-compliance-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install jq
+        run: sudo apt-get install -y jq
+
+      - name: Generate Dockerfile JSON
+        run: |
+          bash .opa/dockerfile-to-json.sh Dockerfile > dockerfile.json
+
+      - name: Run OPA Policy Check
+        run: |
+          docker run --rm \
+            -v ${{ github.workspace }}:/opa \
+            openpolicyagent/opa eval \
+            --input /opa/dockerfile.json \
+            --data /opa/policy.rego \
+            "data.docker.compliance.deny" > violations.json
+
+      - name: Fail if Violations Exist
+        run: |
+          if [ "$(jq length violations.json)" -gt 0 ]; then
+            echo "❌ Compliance Violations Found:"
+            cat violations.json
+            exit 1
+          else
+            echo "✅ No compliance issues found"
+          fi
