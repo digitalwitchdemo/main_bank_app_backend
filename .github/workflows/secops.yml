@@ -76,7 +76,7 @@ jobs:
           pwd ${GITHUB_WORKSPACE}/opa
           if [ -f Dockerfile ]; then
             echo "Running OPA security check on Dockerfile..."
-            docker run --rm -v $(pwd):/policy openpolicyagent/conftest:latest test Dockerfile --policy opa/dockerfile-security.rego
+            docker run --rm -v $(pwd):/ openpolicyagent/conftest:latest test Dockerfile --policy opa/dockerfile-security.rego
           else
             echo "Dockerfile not found, skipping compliance check."
             exit 0
