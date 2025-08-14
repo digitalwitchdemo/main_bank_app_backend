@@ -73,7 +73,7 @@ jobs:
 
       - name: Run OPA Policy Check
         run: |
-          pwd ./
+          pwd ./opa
           docker run --rm \
             openpolicyagent/opa eval \
             --input ./opa/dockerfile.json \
