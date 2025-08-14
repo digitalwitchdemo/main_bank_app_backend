@@ -66,7 +66,7 @@ jobs:
       - name: Install jq
         run: sudo apt-get install -y jq
 
-      - name: Generate Dockerfile JSON
+      - name: Generate Dockerfile JSON.
         run: |
           bash opa/dockerfile-to-json.sh Dockerfile > ${GITHUB_WORKSPACE}/opa/dockerfile.json
           ls -la ${GITHUB_WORKSPACE}/opa
@@ -75,9 +75,10 @@ jobs:
         run: |
           pwd ${GITHUB_WORKSPACE}/opa
           docker run --rm \
+            -v ${{ github.workspace }}:/opa \
             openpolicyagent/opa eval \
-            --input ${GITHUB_WORKSPACE}/opa/dockerfile.json \
-            --data ${GITHUB_WORKSPACE}/opa/policy.rego \
+            --input dockerfile.json \
+            --data policy.rego \
             "data.docker.compliance.deny" > violations.json
 
       - name: Fail if Violations Exist
