@@ -76,7 +76,7 @@ jobs:
           cp Dockerfile opa/Dockerfile
           if [ -f Dockerfile ]; then
             echo "Running OPA security check on Dockerfile..."
-            docker run --rm -v $(pwd):/opa openpolicyagent/conftest:latest test Dockerfile --policy policy.rego
+            docker run --rm -v $(pwd)/opa:/policy openpolicyagent/conftest:latest test Dockerfile --policy policy.rego
           else
             echo "Dockerfile not found, skipping compliance check."
             exit 0
