@@ -75,7 +75,8 @@ jobs:
         run: |
           pwd ${GITHUB_WORKSPACE}/opa
           docker run --rm \
-            -v ${{ github.workspace }}:/opa \
+            -v ${{ github.workspace }}/opa/dockerfile.json:/dockerfile.json \
+            -v ${{ github.workspace }}/opa/policy.rego:/policy.rego \
             openpolicyagent/opa eval \
             --input dockerfile.json \
             --data policy.rego \
