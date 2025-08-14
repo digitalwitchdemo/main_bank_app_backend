@@ -69,7 +69,9 @@ jobs:
           version: latest
 
       - name: Run OPA Tests
-        run: opa test opa/*.rego -v
+        run: |
+          cp opa/policy.rego test/
+          opa test test/*.rego -v
       # - name: Fail if Violations Exist
       #   run: |
       #     if [ "$(jq length violations.json)" -gt 0 ]; then

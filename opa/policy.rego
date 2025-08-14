@@ -1,4 +1,4 @@
-package docker.compliance
+# package docker.compliance
 
 # 1. Approved base image registry
 deny[msg] {
