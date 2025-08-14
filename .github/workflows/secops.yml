@@ -75,12 +75,14 @@ jobs:
         run: |
           pwd ${GITHUB_WORKSPACE}/opa
           docker run --rm \
-            -v ${{ github.workspace }}/opa/dockerfile.json:/dockerfile.json \
-            -v ${{ github.workspace }}/opa/policy.rego:/policy.rego \
+            -v ${{ github.workspace }}/opa:opa \
             openpolicyagent/opa eval \
-            --input dockerfile.json \
-            --data policy.rego \
+            --input opa/dockerfile.json \
+            --data opa/policy.rego \
             "data.docker.compliance.deny" > violations.json
+          
+          ls -la ${GITHUB_WORKSPACE}/opa
+
 
       - name: Fail if Violations Exist
         run: |
