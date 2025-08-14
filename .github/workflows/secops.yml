@@ -76,8 +76,8 @@ jobs:
           pwd ${GITHUB_WORKSPACE}/opa
           docker run --rm \
             openpolicyagent/opa eval \
-            --input ./opa/dockerfile.json \
-            --data ./opa/policy.rego \
+            --input ${GITHUB_WORKSPACE}/opa/dockerfile.json \
+            --data ${GITHUB_WORKSPACE}/opa/policy.rego \
             "data.docker.compliance.deny" > violations.json
 
       - name: Fail if Violations Exist
