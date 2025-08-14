@@ -68,7 +68,7 @@ jobs:
 
       - name: Generate Dockerfile JSON
         run: |
-          bash .opa/dockerfile-to-json.sh Dockerfile > dockerfile.json
+          bash opa/dockerfile-to-json.sh Dockerfile > dockerfile.json
 
       - name: Run OPA Policy Check
         run: |
