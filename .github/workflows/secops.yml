@@ -75,7 +75,7 @@ jobs:
         run: |
           docker run --rm \
             openpolicyagent/opa eval \
-            --input dockerfile.json \
+            --input ./dockerfile.json \
             --data opa/policy.rego \
             "data.docker.compliance.deny" > violations.json
 
