@@ -64,17 +64,12 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Download OPA
-        uses: open-policy-agent/setup-opa
+        uses: open-policy-agent/setup-opa@v2
         with:
-          version: edge
+          version: latest
 
-      - name: Check tests results coverage remains above 70%
-        run: |
-          my test command |
-            opa eval --fail-defined \
-            --stdin-input \
-            'input.results[_].coverage < 0.7'
-
+      - name: Run OPA Tests
+        run: opa test opa/*.rego -v
       # - name: Fail if Violations Exist
       #   run: |
       #     if [ "$(jq length violations.json)" -gt 0 ]; then
