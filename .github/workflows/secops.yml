@@ -63,21 +63,9 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Download OPA
-        uses: open-policy-agent/setup-opa@v2
+      - name: Run OPA Rego Tests
+        uses: masterpointio/github-action-opa-rego-test@main
         with:
-          version: latest
-
-      - name: Run OPA Tests
-        run: |
-          cp opa/policy.rego test/
-          opa test test/*.rego -v
-      # - name: Fail if Violations Exist
-      #   run: |
-      #     if [ "$(jq length violations.json)" -gt 0 ]; then
-      #       echo "❌ Compliance Violations Found:"
-      #       cat violations.json
-      #       exit 1
-      #     else
-      #       echo "✅ No compliance issues found"
-      #     fi
+          path: ./opa
+          test_mode: directory # Whether to test the Rego by directory (e.g. opa test ./) or by individual files (e.g. opa test a_test.rego a.rego). Options of `directory` or `file`.
+          report_untested_files: true
