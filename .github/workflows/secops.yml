@@ -73,10 +73,9 @@ jobs:
       - name: Run OPA Policy Check
         run: |
           docker run --rm \
-            -v ${{ github.workspace }}:/opa \
             openpolicyagent/opa eval \
-            --input dockerfile.json \
-            --data /opa/policy.rego \
+            --input /workspace/dockerfile.json \
+            --data /workspace/opa/policy.rego \
             "data.docker.compliance.deny" > violations.json
 
       - name: Fail if Violations Exist
