@@ -63,18 +63,10 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Install jq
-        run: sudo apt-get install -y jq
-
-      - name: Generate Dockerfile JSON.
-        run: |
-          bash opa/dockerfile-to-json.sh Dockerfile > ${GITHUB_WORKSPACE}/opa/dockerfile.json
-          ls -la ${GITHUB_WORKSPACE}/opa
-
       - name: Download OPA
         uses: open-policy-agent/setup-opa
         with:
-            version: edge
+          version: edge
 
       - name: Check tests results coverage remains above 70%
         run: |
