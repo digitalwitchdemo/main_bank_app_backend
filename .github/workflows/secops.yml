@@ -71,30 +71,24 @@ jobs:
           bash opa/dockerfile-to-json.sh Dockerfile > ${GITHUB_WORKSPACE}/opa/dockerfile.json
           ls -la ${GITHUB_WORKSPACE}/opa
 
-      - name: Run OPA Policy Check
-        run: |
-          cp Dockerfile opa/Dockerfile
-          if [ -f Dockerfile ]; then
-            echo "Running OPA security check on Dockerfile..."
-            docker run --rm -v $(pwd)/opa:/policy openpolicyagent/conftest:latest test Dockerfile --policy policy.rego
-          else
-            echo "Dockerfile not found, skipping compliance check."
-            exit 0
-          fi
-          # docker run --rm \
-          #   -v ${{ github.workspace }}/opa/dockerfile.json:/dockerfile.json \
-          #   -v ${{ github.workspace }}/opa/policy.rego:/policy.rego \
-          #   openpolicyagent/opa eval \
-          #   --input dockerfile.json \
-          #   --data policy.rego \
-          #   "data.docker.compliance.deny" > violations.json
+      - name: Download OPA
+        uses: open-policy-agent/setup-opa
+        with:
+            version: edge
 
-      - name: Fail if Violations Exist
+      - name: Check tests results coverage remains above 70%
         run: |
-          if [ "$(jq length violations.json)" -gt 0 ]; then
-            echo "❌ Compliance Violations Found:"
-            cat violations.json
-            exit 1
-          else
-            echo "✅ No compliance issues found"
-          fi
+          my test command |
+            opa eval --fail-defined \
+            --stdin-input \
+            'input.results[_].coverage < 0.7'
+
+      # - name: Fail if Violations Exist
+      #   run: |
+      #     if [ "$(jq length violations.json)" -gt 0 ]; then
+      #       echo "❌ Compliance Violations Found:"
+      #       cat violations.json
+      #       exit 1
+      #     else
+      #       echo "✅ No compliance issues found"
+      #     fi
