@@ -75,7 +75,7 @@ jobs:
           docker run --rm \
             -v ${{ github.workspace }}:/opa \
             openpolicyagent/opa eval \
-            --input /opa/dockerfile.json \
+            --input dockerfile.json \
             --data /opa/policy.rego \
             "data.docker.compliance.deny" > violations.json
 
