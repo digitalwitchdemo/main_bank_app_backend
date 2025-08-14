@@ -74,22 +74,27 @@ jobs:
       - name: Run OPA Policy Check
         run: |
           pwd ${GITHUB_WORKSPACE}/opa
-          docker run --rm \
-            -v ${{ github.workspace }}/opa:workspace \
-            openpolicyagent/opa eval \
-            --input workspace/dockerfile.json \
-            --data workspace/policy.rego \
-            "data.docker.compliance.deny" > violations.json
-          
-          ls -la ${GITHUB_WORKSPACE}/opa
-
-
-      - name: Fail if Violations Exist
-        run: |
-          if [ "$(jq length violations.json)" -gt 0 ]; then
-            echo "❌ Compliance Violations Found:"
-            cat violations.json
-            exit 1
+          if [ -f Dockerfile ]; then
+            echo "Running OPA security check on Dockerfile..."
+            docker run --rm -v $(pwd):/policy openpolicyagent/conftest:latest test Dockerfile --policy opa/dockerfile-security.rego
           else
-            echo "✅ No compliance issues found"
+            echo "Dockerfile not found, skipping compliance check."
+            exit 0
           fi
+          # docker run --rm \
+          #   -v ${{ github.workspace }}/opa/dockerfile.json:/dockerfile.json \
+          #   -v ${{ github.workspace }}/opa/policy.rego:/policy.rego \
+          #   openpolicyagent/opa eval \
+          #   --input dockerfile.json \
+          #   --data policy.rego \
+          #   "data.docker.compliance.deny" > violations.json
+
+      # - name: Fail if Violations Exist
+      #   run: |
+      #     if [ "$(jq length violations.json)" -gt 0 ]; then
+      #       echo "❌ Compliance Violations Found:"
+      #       cat violations.json
+      #       exit 1
+      #     else
+      #       echo "✅ No compliance issues found"
+      #     fi
