@@ -29,8 +29,7 @@ jobs:
 
       - name: Dependency check lib installation
         run: | 
-             mvn org.owasp:dependency-check-maven:check 
-             #-DnvdApiKey=${{ secrets.NVD_API_KEY }}
+             mvn org.owasp:dependency-check-maven:check -DnvdApiKey=${{ secrets.NVD_API_KEY }}
              ls -la ./target
              cat ./target/dependency-check-report.csv
 
