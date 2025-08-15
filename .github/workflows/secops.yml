@@ -81,9 +81,8 @@ jobs:
 
           
           ls -la 
-          opa --version
-          # mv opa /usr/local/bin/opa
-          # opa run 
+          opa eval --data ./opa_folder/policy.rego --input ${GITHUB_WORKSPACE}/dockerfile.json
+ 
 
           # echo "Running OPA policy check on Dockerfile"
           # opa version
