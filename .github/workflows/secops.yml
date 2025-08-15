@@ -78,15 +78,15 @@ jobs:
           unzip v1.7.1.zip
           mv opa-1.7.1 opa
           chmod 755 ./opa
-          cp dockerfile-to-json.sh opa/
-          cp d
-          # sudo mv ./opa/opa /usr/local/bin/opa
-          # ls -la /usr/local/bin/opa
-          echo "Running OPA policy check on Dockerfile"
-          opa version
-          dockerfile-to-json.sh Dockerfile > ${GITHUB_WORKSPACE}/dockerfile.json
-          # opa eval --data ./opa/policy.rego --input ${GITHUB_WORKSPACE}/
+          .opa --version
+          
+          # # sudo mv ./opa/opa /usr/local/bin/opa
+          # # ls -la /usr/local/bin/opa
+          # echo "Running OPA policy check on Dockerfile"
+          # opa version
+          # dockerfile-to-json.sh Dockerfile > ${GITHUB_WORKSPACE}/dockerfile.json
+          # # opa eval --data ./opa/policy.rego --input ${GITHUB_WORKSPACE}/
 
-          # #./opa run --server --set=decision_logs.console=true ./opa/policy.rego ${GITHUB_WORKSPACE}/opa/dockerfile.json
+          # # #./opa run --server --set=decision_logs.console=true ./opa/policy.rego ${GITHUB_WORKSPACE}/opa/dockerfile.json
 
 
