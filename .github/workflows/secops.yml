@@ -73,7 +73,7 @@ jobs:
 
       - name: Run OPA Policy Check
         run: |
-          apt install unzip wget -y
+          sudo apt install unzip wget -y
           wget https://github.com/open-policy-agent/opa/archive/refs/tags/v1.7.1.zip
           unzip v1.7.1.zip
           ls -la 
