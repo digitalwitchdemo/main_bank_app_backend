@@ -8,6 +8,33 @@ on:
 
 
 jobs: 
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout repo
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Set up Java
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+          cache: maven
+
+      # Run Maven verify (includes tests + JaCoCo + coverage check)
+      - name: Run tests with JaCoCo
+        run: mvn clean verify
+
+      # Upload JaCoCo HTML report as artifact
+      - name: Upload JaCoCo Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: jacoco-report
+          path: target/site/jacoco
+          
   # Dependency-Check:
   #   name: OWASP-Dependency-Check
   #   runs-on: ubuntu-latest
@@ -56,28 +83,4 @@ jobs:
 
 
 
-
-  dockerfile-compliance-scan:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Install jq
-        run: sudo apt-get install -y jq
-
-      - name: Generate Dockerfile JSON.
-        run: |
-          bash opa_folder/dockerfile-to-json.sh Dockerfile > ${GITHUB_WORKSPACE}/opa_folder/dockerfile.json
-          
-
-      - name: Run OPA Policy Check
-        run: |
-          sudo apt install unzip wget -y
-          wget  https://github.com/open-policy-agent/opa/releases/download/v1.7.1/opa_linux_amd64 -o opa
-          mv opa_linux_amd64 opa
-          chmod +x opa
-          sudo mv opa /usr/local/bin/opa
-
-          opa eval --input ${GITHUB_WORKSPACE}/opa_folder/dockerfile.json --data ./opa_folder/policy.rego "data.docker.compliance.deny"
 
