@@ -81,7 +81,8 @@ jobs:
 
           
           ls -la 
-          opa eval --data ./opa_folder/policy.rego --input ${GITHUB_WORKSPACE}/dockerfile.json
+          opa test Dockerfile --policy ./opa_folder/policy.rego
+          #opa eval --data ./opa_folder/policy.rego --input ${GITHUB_WORKSPACE}/dockerfile.json
  
 
           # echo "Running OPA policy check on Dockerfile"
@@ -89,6 +90,6 @@ jobs:
     
           # # # opa eval --data ./opa/policy.rego --input ${GITHUB_WORKSPACE}/
 
-          # # # #./opa run --server --set=decision_logs.console=true ./opa/policy.rego ${GITHUB_WORKSPACE}/opa/dockerfile.json
+          # # # #./opa run --server --set=decision_logs.console=true ./opa/policy.rego ${GITHUB_WORKSPACE}/dockerfile.json
 
 
