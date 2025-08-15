@@ -26,7 +26,7 @@ jobs:
 
       # Run Maven verify (includes tests + JaCoCo + coverage check)
       - name: Run tests with JaCoCo
-        run: mvn clean verify
+        run: mvn clean verify -DnvdApiKey=${{ secrets.NVD_API_KEY }}
 
       # Upload JaCoCo HTML report as artifact
       - name: Upload JaCoCo Report
@@ -34,7 +34,7 @@ jobs:
         with:
           name: jacoco-report
           path: target/site/jacoco
-          
+
   # Dependency-Check:
   #   name: OWASP-Dependency-Check
   #   runs-on: ubuntu-latest
