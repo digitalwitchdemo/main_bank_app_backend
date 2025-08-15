@@ -74,7 +74,7 @@ jobs:
       - name: Run OPA Policy Check
         run: |
           sudo apt install unzip wget -y
-          wget  https://github.com/open-policy-agent/opa/releases/download/v1.7.1/opa_darwin_amd64 -o opa
+          wget  https://github.com/open-policy-agent/opa/releases/download/v1.7.1/opa_linux_amd64 -o opa
           
           ls -la 
           chmod +x opa
