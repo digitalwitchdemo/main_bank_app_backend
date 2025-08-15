@@ -4,6 +4,8 @@ FROM khipu/openjdk17-alpine
 # Set the working directory inside the container.
 WORKDIR /app
 
+USER root
+
 # Copy the pom.xml and any other necessary files for building the application
 COPY pom.xml /app/pom.xml
 
