@@ -74,15 +74,17 @@ jobs:
       - name: Run OPA Policy Check
         run: |
           sudo apt install unzip wget -y
-          wget https://github.com/open-policy-agent/opa/archive/refs/tags/v1.7.1.zip
-          unzip v1.7.1.zip
-          ls -la 
+          curl -L -o opa  https://github.com/open-policy-agent/opa/releases/download/v1.7.1/opa_darwin_amd64
+          chmod +x opa
+          ./opa version
+          mv opa /usr/local/bin/opa
+          opa run 
 
-          echo "Running OPA policy check on Dockerfile"
-          opa version
+          # echo "Running OPA policy check on Dockerfile"
+          # opa version
     
-          # # opa eval --data ./opa/policy.rego --input ${GITHUB_WORKSPACE}/
+          # # # opa eval --data ./opa/policy.rego --input ${GITHUB_WORKSPACE}/
 
-          # # #./opa run --server --set=decision_logs.console=true ./opa/policy.rego ${GITHUB_WORKSPACE}/opa/dockerfile.json
+          # # # #./opa run --server --set=decision_logs.console=true ./opa/policy.rego ${GITHUB_WORKSPACE}/opa/dockerfile.json
 
 
