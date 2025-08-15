@@ -73,7 +73,10 @@ jobs:
 
       - name: Run OPA Policy Check
         run: |
-          curl -L -o opa https://github.com/open-policy-agent/opa/releases/download/v0.11.0/opa_linux_amd64Dockerfile
-          chmod 755 ./opa
-          
+          apt install unzip wget -y
+          wget https://github.com/open-policy-agent/opa/archive/refs/tags/v1.7.1.zip
+          unzip v1.7.1.zip
+          ls -la 
+          # chmod 755 ./opa
+
 
