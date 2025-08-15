@@ -1,24 +1,29 @@
-package docker.authz
+package docker.compliance
 
-default allow := false
-
-# allow if the user is granted read/write access.
-allow if {
-	user_id := input.Headers["Authz-User"]
-	user := users[user_id]
-	not user.readOnly
+deny[msg] {
+  input.user == "root"
+  msg := "Container must not run as root user"
 }
 
-# allow if the user is granted read-only access and the request is a GET.
-allow if {
-	user_id := input.Headers["Authz-User"]
-	users[user_id].readOnly
-	input.Method == "GET"
+deny[msg] {
+  startswith(input.base_image, "ubuntu:14")
+  msg := sprintf("Base image %s is too old", [input.base_image])
 }
 
-# users defines permissions for the user. In this case, we define a single
-# attribute 'readOnly' that controls the kinds of commands the user can run.
-users := {
-	"bob": {"readOnly": true},
-	"alice": {"readOnly": false},
+deny[msg] {
+  some cmd
+  cmd := input.run_commands[_]
+  contains(cmd, "apt-get install") 
+  contains(cmd, "openssh-server")
+  msg := "Installing openssh-server is prohibited"
+}
+
+deny[msg] {
+  not input.user
+  msg := "USER instruction must be set in Dockerfile"
+}
+
+deny[msg] {
+  startswith(input.base_image, "alpine:3.4")
+  msg := "Alpine 3.4 is not supported"
 }

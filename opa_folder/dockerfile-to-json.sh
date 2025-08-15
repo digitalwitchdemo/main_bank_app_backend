@@ -1,4 +1,7 @@
-#!/usr/bin/env bash
+
+ !/usr/bin/env bash
+
+ 
 set -e
 
 DOCKERFILE_PATH=${1:-Dockerfile}

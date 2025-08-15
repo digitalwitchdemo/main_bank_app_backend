@@ -69,7 +69,7 @@ jobs:
       - name: Generate Dockerfile JSON.
         run: |
           bash opa_folder/dockerfile-to-json.sh Dockerfile > ${GITHUB_WORKSPACE}/opa_folder/dockerfile.json
-          ls -la ${GITHUB_WORKSPACE}/opa_folder
+          cat ${GITHUB_WORKSPACE}/opa_folder/dockerfile.json
 
       - name: Run OPA Policy Check
         run: |
@@ -79,17 +79,5 @@ jobs:
           chmod +x opa
           sudo mv opa /usr/local/bin/opa
 
-          
-          ls -la 
           opa eval --input ${GITHUB_WORKSPACE}/opa_folder/dockerfile.json --data ./opa_folder/policy.rego "data.docker.compliance.deny"
-          #opa eval --data ./opa_folder/policy.rego --input ${GITHUB_WORKSPACE}/dockerfile.json
- 
-
-          # echo "Running OPA policy check on Dockerfile"
-          # opa version
-    
-          # # # opa eval --data ./opa/policy.rego --input ${GITHUB_WORKSPACE}/
-
-          # # # #./opa run --server --set=decision_logs.console=true ./opa/policy.rego ${GITHUB_WORKSPACE}/dockerfile.json
-
 
