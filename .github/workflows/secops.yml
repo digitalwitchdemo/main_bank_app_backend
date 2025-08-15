@@ -76,7 +76,15 @@ jobs:
           sudo apt install unzip wget -y
           wget https://github.com/open-policy-agent/opa/archive/refs/tags/v1.7.1.zip
           unzip v1.7.1.zip
-          ls -la 
-          # chmod 755 ./opa
+          mv opa-1.7.1 opa
+          chmod 755 ./opa
+          sudo mv ./opa/opa /usr/local/bin/opa
+          ls -la /usr/local/bin/opa
+          echo "Running OPA policy check on Dockerfile"
+          opa version
+          dockerfile-to-json.sh Dockerfile > ${GITHUB_WORKSPACE}/opa/dockerfile.json
+          # opa eval --data ./opa/policy.rego --input ${GITHUB_WORKSPACE}/
+
+          # #./opa run --server --set=decision_logs.console=true ./opa/policy.rego ${GITHUB_WORKSPACE}/opa/dockerfile.json
 
 
