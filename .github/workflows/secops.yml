@@ -81,7 +81,6 @@ jobs:
 
           
           ls -la 
-          chmod +x opa
           opa --version
           # mv opa /usr/local/bin/opa
           # opa run 
