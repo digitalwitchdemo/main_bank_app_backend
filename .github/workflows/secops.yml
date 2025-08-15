@@ -78,7 +78,7 @@ jobs:
           unzip v1.7.1.zip
           mv opa-1.7.1 opa
           chmod 755 ./opa
-          ./opa --version
+          ls -la ./opa/ | grep opa
 
           
           sudo mv ./opa/opa /usr/local/bin/opa
