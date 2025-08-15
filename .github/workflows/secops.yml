@@ -63,9 +63,17 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Run OPA Rego Tests
-        uses: masterpointio/github-action-opa-rego-test@main
-        with:
-          path: ./opa
-          test_mode: directory # Whether to test the Rego by directory (e.g. opa test ./) or by individual files (e.g. opa test a_test.rego a.rego). Options of `directory` or `file`.
-          report_untested_files: true
+      - name: Install jq
+        run: sudo apt-get install -y jq
+
+      - name: Generate Dockerfile JSON.
+        run: |
+          bash opa/dockerfile-to-json.sh Dockerfile > ${GITHUB_WORKSPACE}/opa/dockerfile.json
+          ls -la ${GITHUB_WORKSPACE}/opa
+
+      - name: Run OPA Policy Check
+        run: |
+          curl -L -o opa https://github.com/open-policy-agent/opa/releases/download/v0.11.0/opa_linux_amd64Dockerfile
+          chmod 755 ./opa
+          
+
