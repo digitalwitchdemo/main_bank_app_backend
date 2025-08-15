@@ -75,10 +75,11 @@ jobs:
         run: |
           sudo apt install unzip wget -y
           curl -L -o opa  https://github.com/open-policy-agent/opa/releases/download/v1.7.1/opa_darwin_amd64
-          chmod +x opa
-          ./opa version
-          mv opa /usr/local/bin/opa
-          opa run 
+          ls -la opa
+          # chmod +x opa
+          # ./opa version
+          # mv opa /usr/local/bin/opa
+          # opa run 
 
           # echo "Running OPA policy check on Dockerfile"
           # opa version
