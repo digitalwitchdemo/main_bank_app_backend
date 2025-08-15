@@ -75,6 +75,10 @@ jobs:
         run: |
           sudo apt install unzip wget -y
           wget  https://github.com/open-policy-agent/opa/releases/download/v1.7.1/opa_linux_amd64 -o opa
+          mv opa_linux_amd64 opa
+          chmod +x opa
+          sudo mv opa /usr/local/bin/opa
+
           
           ls -la 
           chmod +x opa
