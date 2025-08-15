@@ -81,7 +81,7 @@ jobs:
 
           
           ls -la 
-          opa test Dockerfile --policy ./opa_folder/policy.rego
+          opa eval --input dockerfile.json --data ./opa_folder/policy.rego "data.docker.compliance.deny"
           #opa eval --data ./opa_folder/policy.rego --input ${GITHUB_WORKSPACE}/dockerfile.json
  
 
