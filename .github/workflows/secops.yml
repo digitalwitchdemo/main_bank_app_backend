@@ -82,7 +82,7 @@ jobs:
           ls -la /usr/local/bin/opa
           echo "Running OPA policy check on Dockerfile"
           opa version
-          dockerfile-to-json.sh Dockerfile > ${GITHUB_WORKSPACE}/opa/dockerfile.json
+          dockerfile-to-json.sh Dockerfile > ${GITHUB_WORKSPACE}/dockerfile.json
           # opa eval --data ./opa/policy.rego --input ${GITHUB_WORKSPACE}/
 
           # #./opa run --server --set=decision_logs.console=true ./opa/policy.rego ${GITHUB_WORKSPACE}/opa/dockerfile.json
