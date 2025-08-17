@@ -33,18 +33,11 @@ jobs:
              ls -la ./target
              cat ./target/dependency-check-report.csv
 
-        # Upload JaCoCo HTML report as artifact
-      - name: Upload JaCoCo Report
-        uses: actions/upload-artifact@v4
-        with:
-          name: jacoco-report
-          path: target/site/jacoco
 
-
-  #     - name: Uploading to DefectDojo
-        # run: | 
-        #      chmod +x dependency-check-upload.sh
-        #      sh dependency-check-upload.sh
+      - name: Uploading to DefectDojo
+        run: | 
+             chmod +x dependency-check-upload.sh
+             sh dependency-check-upload.sh
         
 
 
