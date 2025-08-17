@@ -10,7 +10,7 @@ product_type='main_bank_app_backend'
 
   
   curl -X 'POST' \
-  'http://3.82.212.213::8080/api/v2/import-scan/' \
+  'http://3.82.212.213:8080/api/v2/import-scan/' \
   -H 'accept: application/json' \
   -H 'Content-Type: multipart/form-data' \
   -H 'X-CSRFTOKEN: jMLrqI2hbGLDIUZUoQ0mJ1hcxg8CM8v4A1QqM2z71cqr0lKoMnyjiDvwRkkLAtDf' \
