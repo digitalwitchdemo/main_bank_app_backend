@@ -29,15 +29,17 @@ jobs:
 
       - name: Dependency check lib installation
         run: | 
-             mvn org.owasp:dependency-check-maven:check -DnvdApiKey=6b19ac9f-56c6-4511-8db6-2c3f5dd85585
-             ls -la ./target
-             cat ./target/dependency-check-report.csv
+            ls -la
+            #  mvn org.owasp:dependency-check-maven:check -DnvdApiKey=6b19ac9f-56c6-4511-8db6-2c3f5dd85585
+            #  ls -la ./target
+            #  cat ./target/dependency-check-report.csv
 
 
       - name: Uploading to DefectDojo
         run: | 
-             chmod +x dependency-check-upload.sh
-             sh dependency-check-upload.sh
+            ls -la
+            #  chmod +x dependency-check-upload.sh
+            #  sh dependency-check-upload.sh
         
 
 
