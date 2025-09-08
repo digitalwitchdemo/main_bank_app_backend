@@ -68,7 +68,7 @@ jobs:
         projectBaseDir: .
         args: >
           -Dsonar.organization=securespherelabs
-          -Dsonar.projectKey=bank-app-backend
+          -Dsonar.projectKey=Main-bank-app-backend
           -Dsonar.sources=src/main/java
           -Dsonar.java.binaries=target/classes
           -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
