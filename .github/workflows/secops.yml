@@ -60,7 +60,7 @@ jobs:
         distribution: 'temurin'
         
     - name: Cache SonarQube packages
-      run: mvn clean verify 
+      run: mvn clean verify -DnvdApiKey=6b19ac9f-56c6-4511-8db6-2c3f5dd85585
     
     - name: SonarQube Scan
       uses: sonarsource/sonarqube-scan-action@master
