@@ -23,7 +23,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("api/bank/transaction")
-@CrossOrigin(origins = "https://bank.cloudwitches.online")
+@CrossOrigin(origins = "https://bank.pod15engineers.online")
 public class BankAccountTransactionController {
 
 	@Autowired
